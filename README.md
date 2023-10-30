@@ -1,2 +1,2 @@
 # cilium-kyverno
-This repository contains examples of Kyverno policies for controlling the creation of Cilium Network policies
+This repository offers a curated set of Kyverno policies designed to provide granular governance over the creation and modification of Cilium Network Policies.
