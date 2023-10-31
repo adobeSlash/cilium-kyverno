@@ -1,0 +1,23 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-egress-ports
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: check-egress-ports
+    match:
+      resources:
+        kinds:
+        - CiliumNetworkPolicy
+    preconditions:
+      - key: "{{ request.object.spec.egress }}"
+        operator: NotEquals
+        value: null
+    validate:
+      message: "Egress to port 22 is not allowed."
+      deny:
+        conditions:
+        - key: "{{ request.object.spec.egress[0].toPorts[0].ports[0].port }}"
+          operator: In
+          value: ["22"]

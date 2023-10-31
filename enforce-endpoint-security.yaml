@@ -1,0 +1,20 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-endpoint-security
+spec:
+  validationFailureAction: enforce
+  background: false
+  rules:
+  - name: deny-external-ingress
+    match:
+      resources:
+        kinds:
+        - CiliumNetworkPolicy
+    validate:
+      message: "CiliumNetworkPolicy must deny ingress from external IPs"
+      pattern:
+        spec:
+          ingress:
+          - fromCIDR:
+            - "!192.168.0.0/16"

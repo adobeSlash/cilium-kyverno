@@ -1,0 +1,19 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: limit-endpoint-count
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: check-endpoint-count
+    match:
+      resources:
+        kinds:
+        - CiliumNetworkPolicy
+    validate:
+      message: "Policy applies to too many endpoints; limit is 10."
+      deny:
+        conditions:
+        - key: "{{ length(request.object.spec.endpointSelector.matchLabels) }}"
+          operator: GreaterThan
+          value: 10

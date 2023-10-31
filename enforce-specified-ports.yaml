@@ -1,0 +1,21 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-specified-ports
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: check-specified-ports
+    match:
+      resources:
+        kinds:
+        - CiliumNetworkPolicy
+    validate:
+      message: "Only traffic on specified ports is allowed."
+      pattern:
+        spec:
+          ingress:
+            - toPorts:
+              - ports:
+                - port: "443"
+                  protocol: "TCP"

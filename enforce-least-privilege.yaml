@@ -1,0 +1,19 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-least-privilege
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: check-least-privilege
+    match:
+      resources:
+        kinds:
+        - CiliumNetworkPolicy
+    validate:
+      message: "Using 'allow-all' is not permitted."
+      deny:
+        conditions:
+        - key: "{{ request.object.spec.ingress[0].fromEndpoints }}"
+          operator: Equals
+          value: "[{}]"
