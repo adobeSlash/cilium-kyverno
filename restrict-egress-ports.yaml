@@ -7,10 +7,12 @@ spec:
   rules:
   - name: check-egress-ports
     match:
-      resources:
-        kinds:
-        - CiliumNetworkPolicy
+      any:
+      - resources:
+          kinds:
+          - CiliumNetworkPolicy
     preconditions:
+      all:
       - key: "{{ request.object.spec.egress }}"
         operator: NotEquals
         value: null
@@ -18,6 +20,7 @@ spec:
       message: "Egress to port 22 is not allowed."
       deny:
         conditions:
-        - key: "{{ request.object.spec.egress[0].toPorts[0].ports[0].port }}"
-          operator: In
-          value: ["22"]
+          all:
+          - key: "{{ request.object.spec.egress[0].toPorts[0].ports[0].port }}"
+            operator: In
+            value: ["22"]

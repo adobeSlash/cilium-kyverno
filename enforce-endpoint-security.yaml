@@ -8,9 +8,10 @@ spec:
   rules:
   - name: deny-external-ingress
     match:
-      resources:
-        kinds:
-        - CiliumNetworkPolicy
+      any:
+      - resources:
+          kinds:
+          - CiliumNetworkPolicy
     validate:
       message: "CiliumNetworkPolicy must deny ingress from external IPs"
       pattern:

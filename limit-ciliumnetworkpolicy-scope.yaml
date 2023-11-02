@@ -8,9 +8,10 @@ spec:
   rules:
   - name: limit-scope
     match:
-      resources:
-        kinds:
-        - CiliumNetworkPolicy
+      any:
+      - resources:
+          kinds:
+          - CiliumNetworkPolicy
     validate:
       message: "CiliumNetworkPolicy can only be applied to specific namespaces"
       anyPattern:

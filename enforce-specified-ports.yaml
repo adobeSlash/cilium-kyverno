@@ -7,9 +7,10 @@ spec:
   rules:
   - name: check-specified-ports
     match:
-      resources:
-        kinds:
-        - CiliumNetworkPolicy
+      any:
+      - resources:
+          kinds:
+          - CiliumNetworkPolicy
     validate:
       message: "Only traffic on specified ports is allowed."
       pattern:

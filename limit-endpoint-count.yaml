@@ -7,13 +7,15 @@ spec:
   rules:
   - name: check-endpoint-count
     match:
-      resources:
-        kinds:
-        - CiliumNetworkPolicy
+      any:
+      - resources:
+          kinds:
+          - CiliumNetworkPolicy
     validate:
       message: "Policy applies to too many endpoints; limit is 10."
       deny:
         conditions:
-        - key: "{{ length(request.object.spec.endpointSelector.matchLabels) }}"
-          operator: GreaterThan
-          value: 10
+          all:
+          - key: "{{ length(request.object.spec.endpointSelector.matchLabels) }}"
+            operator: GreaterThan
+            value: 10
