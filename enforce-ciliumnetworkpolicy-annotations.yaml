@@ -8,9 +8,10 @@ spec:
   rules:
   - name: check-annotations
     match:
-      resources:
-        kinds:
-        - CiliumNetworkPolicy
+      any:
+      - resources:
+          kinds:
+          - CiliumNetworkPolicy
     validate:
       message: "Missing required annotation"
       pattern:

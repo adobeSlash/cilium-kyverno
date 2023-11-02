@@ -7,13 +7,15 @@ spec:
   rules:
   - name: check-least-privilege
     match:
-      resources:
-        kinds:
-        - CiliumNetworkPolicy
+      any:
+      - resources:
+          kinds:
+          - CiliumNetworkPolicy
     validate:
       message: "Using 'allow-all' is not permitted."
       deny:
         conditions:
-        - key: "{{ request.object.spec.ingress[0].fromEndpoints }}"
-          operator: Equals
-          value: "[{}]"
+          all:
+          - key: "{{ request.object.spec.ingress[0].fromEndpoints }}"
+            operator: Equals
+            value: "[{}]"
